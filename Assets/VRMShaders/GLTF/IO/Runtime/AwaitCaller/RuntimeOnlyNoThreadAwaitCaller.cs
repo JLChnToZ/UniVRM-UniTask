@@ -1,5 +1,11 @@
 ﻿using System;
+#if UNITASK_IMPORTED
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 
 namespace VRMShaders
 {
@@ -9,7 +15,9 @@ namespace VRMShaders
     /// </summary>
     public sealed class RuntimeOnlyNoThreadAwaitCaller : IAwaitCaller
     {
+#if !UNITASK_IMPORTED
         private readonly NextFrameTaskScheduler _scheduler;
+#endif
         private readonly float                  _timeoutInSeconds;
         private          float                  _lastTimeoutBaseTime;
 
@@ -19,7 +27,9 @@ namespace VRMShaders
         /// <param name="timeoutInSeconds">NextFrameIfTimedOutがタイムアウトと見なす時間(秒単位)</param>
         public RuntimeOnlyNoThreadAwaitCaller(float timeoutInSeconds = 1f / 1000f)
         {
+#if !UNITASK_IMPORTED
             _scheduler = new NextFrameTaskScheduler();
+#endif
             _timeoutInSeconds = timeoutInSeconds;
             ResetLastTimeoutBaseTime();
         }
@@ -27,9 +37,13 @@ namespace VRMShaders
         public Task NextFrame()
         {
             ResetLastTimeoutBaseTime();
+#if UNITASK_IMPORTED
+            return Task.Yield(CancellationToken.None);
+#else
             var tcs = new TaskCompletionSource<object>();
             _scheduler.Enqueue(() => tcs.SetResult(default));
             return tcs.Task;
+#endif
         }
 
         public Task Run(Action action)
@@ -37,7 +51,11 @@ namespace VRMShaders
             try
             {
                 action();
+#if UNITASK_IMPORTED
+                return Task.CompletedTask;
+#else
                 return Task.FromResult<object>(null);
+#endif
             }
             catch (Exception ex)
             {
@@ -45,7 +63,11 @@ namespace VRMShaders
             }
         }
 
+#if UNITASK_IMPORTED
+        public UniTask<T> Run<T>(Func<T> action)
+#else
         public Task<T> Run<T>(Func<T> action)
+#endif
         {
             try
             {

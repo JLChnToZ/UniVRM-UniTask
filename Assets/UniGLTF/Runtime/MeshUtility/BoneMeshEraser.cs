@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 using VRMShaders;
 
@@ -139,7 +143,11 @@ namespace UniGLTF.MeshUtility
             return dst;
         }
 
+#if UNITASK_IMPORTED
+        public static async UniTask<Mesh> CreateErasedMeshAsync(Mesh src, int[] eraseBoneIndices, IAwaitCaller awaitCaller)
+#else
         public static async Task<Mesh> CreateErasedMeshAsync(Mesh src, int[] eraseBoneIndices, IAwaitCaller awaitCaller)
+#endif
         {
             if (awaitCaller == null)
             {
@@ -175,8 +183,14 @@ namespace UniGLTF.MeshUtility
         public static Mesh CreateErasedMesh(Mesh src, int[] eraseBoneIndices)
         {
             var task = CreateErasedMeshAsync(src, eraseBoneIndices, new ImmediateCaller());
+    #if UNITASK_IMPORTED
+            var t = task.AsTask();
+            t.Wait();
+            return t.Result;
+    #else
             task.Wait();
             return task.Result;
+    #endif
         }
 
         public static IEnumerable<Transform> Ancestor(this Transform t)

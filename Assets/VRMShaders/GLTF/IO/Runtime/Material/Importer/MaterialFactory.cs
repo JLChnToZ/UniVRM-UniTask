@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 
 
 namespace VRMShaders
 {
+#if UNITASK_IMPORTED
+    public delegate UniTask<Texture> GetTextureAsyncFunc(TextureDescriptor texDesc, IAwaitCaller awaitCaller);
+#else
     public delegate Task<Texture> GetTextureAsyncFunc(TextureDescriptor texDesc, IAwaitCaller awaitCaller);
+#endif
 
     public class MaterialFactory : IResponsibilityForDestroyObjects
     {
@@ -88,7 +97,11 @@ namespace VRMShaders
             return m_materials[index].Asset;
         }
 
+#if UNITASK_IMPORTED
+        public async UniTask<Material> LoadAsync(MaterialDescriptor matDesc, GetTextureAsyncFunc getTexture, IAwaitCaller awaitCaller)
+#else
         public async Task<Material> LoadAsync(MaterialDescriptor matDesc, GetTextureAsyncFunc getTexture, IAwaitCaller awaitCaller)
+#endif
         {
             if (m_externalMap.TryGetValue(matDesc.SubAssetKey, out Material material))
             {

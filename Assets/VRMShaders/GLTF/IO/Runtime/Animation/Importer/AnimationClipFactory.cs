@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 
 namespace VRMShaders
@@ -66,7 +70,11 @@ namespace VRMShaders
             return null;
         }
 
+#if UNITASK_IMPORTED
+        public async UniTask<AnimationClip> LoadAnimationClipAsync(SubAssetKey key, Func<UniTask<AnimationClip>> loadAnimationClip)
+#else
         public async Task<AnimationClip> LoadAnimationClipAsync(SubAssetKey key, Func<Task<AnimationClip>> loadAnimationClip)
+#endif
         {
             if (!_loadedClipKeys.Contains(key))
             {

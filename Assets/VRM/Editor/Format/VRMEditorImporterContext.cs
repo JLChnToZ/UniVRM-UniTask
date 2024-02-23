@@ -82,6 +82,9 @@ namespace VRM
             // convert images(metallic roughness, occlusion map)
             //
             var task = m_context.LoadMaterialsAsync(new ImmediateCaller());
+#if UNITASK_IMPORTED
+            task.GetAwaiter().GetResult();
+#else
             if (!task.IsCompleted)
             {
                 throw new Exception();
@@ -97,13 +100,18 @@ namespace VRM
                     throw task.Exception;
                 }
             }
+#endif
 
             // Convert thumbnail image
             var task2 = m_context.ReadMetaAsync(new ImmediateCaller());
+#if UNITASK_IMPORTED
+            task2.GetAwaiter().GetResult();
+#else
             if (!task2.IsCompleted || task2.IsCanceled || task2.IsFaulted)
             {
                 throw new Exception();
             }
+#endif
 
             //
             // extract converted textures

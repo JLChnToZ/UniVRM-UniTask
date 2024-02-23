@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF.MeshUtility;
 using UnityEngine;
 using VRMShaders;
@@ -39,9 +44,15 @@ namespace UniVRM10
             return eraseBones;
         }
 
+#if UNITASK_IMPORTED
+        public static async UniTask<Mesh> CreateErasedMeshAsync(SkinnedMeshRenderer smr,
+            Transform firstPersonBone,
+            IAwaitCaller awaitCaller)
+#else
         public static async Task<Mesh> CreateErasedMeshAsync(SkinnedMeshRenderer smr,
             Transform firstPersonBone,
             IAwaitCaller awaitCaller)
+#endif
         {
             var eraseBones = GetBonesThatHasAncestor(smr, firstPersonBone);
             if (eraseBones.Any())
@@ -59,8 +70,13 @@ namespace UniVRM10
         // </summary>
         // <parameter>renderer: 元になるSkinnedMeshRenderer</parameter>
         // <parameter>eraseBones: 削除対象になるボーンのindex</parameter>
+#if UNITASK_IMPORTED
+        public async static UniTask<SkinnedMeshRenderer> CreateHeadlessMeshAsync(SkinnedMeshRenderer renderer,
+            Transform firstPersonBone, IAwaitCaller awaitCaller)
+#else
         public async static Task<SkinnedMeshRenderer> CreateHeadlessMeshAsync(SkinnedMeshRenderer renderer,
             Transform firstPersonBone, IAwaitCaller awaitCaller)
+#endif
         {
             var mesh = await CreateErasedMeshAsync(renderer, firstPersonBone, awaitCaller);
             if (mesh != null)

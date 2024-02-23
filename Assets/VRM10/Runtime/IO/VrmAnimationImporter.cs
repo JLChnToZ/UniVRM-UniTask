@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF;
 using UniGLTF.Extensions.VRMC_vrm_animation;
 using UniHumanoid;
@@ -234,7 +239,11 @@ namespace UniVRM10
             return curve;
         }
 
+#if UNITASK_IMPORTED
+        public override async UniTask<RuntimeGltfInstance> LoadAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> measureTime = null)
+#else
         public override async Task<RuntimeGltfInstance> LoadAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> measureTime = null)
+#endif
         {
             // Expression は AnimationClip を分ける。
             // glTFData から関連 Animation を取り除いて、取っておく。

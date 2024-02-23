@@ -2,7 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 using VRM.FastSpringBones.Blittables;
 using VRM.FastSpringBones.Components;

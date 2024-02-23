@@ -84,8 +84,12 @@ namespace UniVRM10
                 smr,
                 firstPersonBone,
                 new VRMShaders.ImmediateCaller());
+#if UNITASK_IMPORTED
+            var mesh = task.GetAwaiter().GetResult();
+#else
             task.Wait();
             var mesh = task.Result;
+#endif
             if (mesh != null)
             {
                 smr.sharedMesh = mesh;

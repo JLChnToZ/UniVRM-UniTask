@@ -1,5 +1,8 @@
 using System.IO;
 using UnityEngine;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace UniVRM10.Sample
 {
@@ -9,7 +12,13 @@ namespace UniVRM10.Sample
         [SerializeField]
         UniVRM10.VRM10ObjectMeta _meta = new UniVRM10.VRM10ObjectMeta();
 
+#if UNITASK_IMPORTED
+        void OnGUI() => OnGUIAsync().Forget();
+
+        async UniTaskVoid OnGUIAsync()
+#else
         async void OnGUI()
+#endif
         {
             // validate
             foreach (var validation in _meta.Validate())

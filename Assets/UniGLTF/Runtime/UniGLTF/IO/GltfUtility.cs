@@ -1,6 +1,10 @@
 using System;
 using System.IO;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 using VRMShaders;
 
@@ -8,7 +12,11 @@ namespace UniGLTF
 {
     public static class GltfUtility
     {
+#if UNITASK_IMPORTED
+        public static async UniTask<RuntimeGltfInstance> LoadAsync(string path, IAwaitCaller awaitCaller = null, IMaterialDescriptorGenerator materialGenerator = null)
+#else
         public static async Task<RuntimeGltfInstance> LoadAsync(string path, IAwaitCaller awaitCaller = null, IMaterialDescriptorGenerator materialGenerator = null)
+#endif
         {
             if (!File.Exists(path))
             {
@@ -28,7 +36,11 @@ namespace UniGLTF
             }
         }
 
+#if UNITASK_IMPORTED
+        public static async UniTask<RuntimeGltfInstance> LoadBytesAsync(string path, byte[] bytes, IAwaitCaller awaitCaller = null, IMaterialDescriptorGenerator materialGenerator = null)
+#else
         public static async Task<RuntimeGltfInstance> LoadBytesAsync(string path, byte[] bytes, IAwaitCaller awaitCaller = null, IMaterialDescriptorGenerator materialGenerator = null)
+#endif
         {
             if (bytes == null)
             {

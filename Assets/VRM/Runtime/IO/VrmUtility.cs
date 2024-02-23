@@ -1,6 +1,10 @@
 ﻿using System;
 using System.IO;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF;
 using UnityEngine;
 using VRMShaders;
@@ -11,6 +15,16 @@ namespace VRM
     {
         public delegate IMaterialDescriptorGenerator MaterialGeneratorCallback(VRM.glTF_VRM_extensions vrm);
         public delegate void MetaCallback(VRMMetaObject meta);
+
+#if UNITASK_IMPORTED
+        public static async UniTask<RuntimeGltfInstance> LoadAsync(string path,
+            IAwaitCaller awaitCaller = null,
+            MaterialGeneratorCallback materialGeneratorCallback = null,
+            MetaCallback metaCallback = null,
+            ITextureDeserializer textureDeserializer = null,
+            bool loadAnimation = false
+            )
+#else
         public static async Task<RuntimeGltfInstance> LoadAsync(string path,
             IAwaitCaller awaitCaller = null,
             MaterialGeneratorCallback materialGeneratorCallback = null,
@@ -18,6 +32,7 @@ namespace VRM
             ITextureDeserializer textureDeserializer = null,
             bool loadAnimation = false
             )
+#endif
         {
             if (!File.Exists(path))
             {
@@ -67,6 +82,16 @@ namespace VRM
         }
 
 
+#if UNITASK_IMPORTED    
+        public static async UniTask<RuntimeGltfInstance> LoadBytesAsync(string path,
+            byte[] bytes,
+            IAwaitCaller awaitCaller = null,
+            MaterialGeneratorCallback materialGeneratorCallback = null,
+            MetaCallback metaCallback = null,
+            ITextureDeserializer textureDeserializer = null,
+            bool loadAnimation = false
+            )
+#else
         public static async Task<RuntimeGltfInstance> LoadBytesAsync(string path,
             byte[] bytes,
             IAwaitCaller awaitCaller = null,
@@ -75,6 +100,7 @@ namespace VRM
             ITextureDeserializer textureDeserializer = null,
             bool loadAnimation = false
             )
+#endif
         {
             if (bytes == null)
             {

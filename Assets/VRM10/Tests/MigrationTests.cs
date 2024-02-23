@@ -199,7 +199,11 @@ namespace UniVRM10
             {
                 try
                 {
+#if UNITASK_IMPORTED
+                    Vrm10.LoadPathAsync(gltf.FullName, true, controlRigGenerationOption: ControlRigGenerationOption.None).GetAwaiter().GetResult();
+#else
                     Vrm10.LoadPathAsync(gltf.FullName, true, controlRigGenerationOption: ControlRigGenerationOption.None).Wait();
+#endif
                 }
                 catch (UnNormalizedException)
                 {
@@ -374,7 +378,11 @@ namespace UniVRM10
                 new Color(2.0f, 2.0f, 2.0f, 1),
             };
 
+#if UNITASK_IMPORTED
+            var instance106 = Vrm10.LoadBytesAsync(model106, awaitCaller: new ImmediateCaller()).GetAwaiter().GetResult();
+#else
             var instance106 = Vrm10.LoadBytesAsync(model106, awaitCaller: new ImmediateCaller()).Result;
+#endif
             var materials106 = instance106.GetComponent<RuntimeGltfInstance>().Materials;
             Assert.AreEqual(materialCount, materials106.Count);
             for (var idx = 0; idx < materialCount; ++idx)
@@ -386,7 +394,11 @@ namespace UniVRM10
                 if (correctEmissions[idx].HasValue) AssertAreApproximatelyEqualColor(correctEmissions[idx].Value, material.GetColor(emissionName));
             }
 
+#if UNITASK_IMPORTED
+            var instance107 = Vrm10.LoadBytesAsync(model107, awaitCaller: new ImmediateCaller()).GetAwaiter().GetResult();
+#else
             var instance107 = Vrm10.LoadBytesAsync(model107, awaitCaller: new ImmediateCaller()).Result;
+#endif
             var materials107 = instance107.GetComponent<RuntimeGltfInstance>().Materials;
             Assert.AreEqual(materialCount, materials107.Count);
             for (var idx = 0; idx < materialCount; ++idx)

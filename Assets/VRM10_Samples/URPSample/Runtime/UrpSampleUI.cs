@@ -2,6 +2,9 @@
 using UniGLTF;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace UniVRM10.URPSample
 {
@@ -16,7 +19,13 @@ namespace UniVRM10.URPSample
             openModelButton.onClick.AddListener(OnOpenModelButtonClicked);
         }
 
+#if UNITASK_IMPORTED
+        private void OnOpenModelButtonClicked() => OnOpenModelButtonClickedAsync().Forget();
+
+        private async UniTaskVoid OnOpenModelButtonClickedAsync()
+#else
         private async void OnOpenModelButtonClicked()
+#endif
         {
             if (_loadedVrm)
             {

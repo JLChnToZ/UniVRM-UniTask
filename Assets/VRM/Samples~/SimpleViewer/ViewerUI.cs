@@ -2,7 +2,12 @@
 using System.Collections;
 using System.IO;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF;
 using UniHumanoid;
 using UnityEngine;
@@ -268,6 +273,9 @@ namespace VRM.SimpleViewer
 
             if (ArgumentChecker.TryGetFirstLoadable(out var cmd))
             {
+#if UNITASK_IMPORTED
+                _ =
+#else
                 LoadPathAsync(cmd);
             }
 
@@ -330,10 +338,17 @@ namespace VRM.SimpleViewer
             {
                 return;
             }
+#if UNITASK_IMPORTED
+            _ =
+#else
             LoadPathAsync(path);
         }
 
+#if UNITASK_IMPORTED
+        async UniTaskVoid LoadPathAsync(string path)
+#else
         async void LoadPathAsync(string path)
+#endif
         {
             if (!File.Exists(path))
             {

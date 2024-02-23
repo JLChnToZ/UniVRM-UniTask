@@ -6,6 +6,9 @@ using UniGLTF;
 using UnityEngine;
 using UnityEngine.UI;
 using VRMShaders;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif'
 
 namespace UniVRM10.VRM10Viewer
 {
@@ -401,7 +404,13 @@ namespace UniVRM10.VRM10Viewer
             LoadModel(path);
         }
 
+#if UNITASK_IMPORTED
+        void OnOpenMotionClicked() => OnOpenMotionClickedAsync().Forget();
+
+        async UniTaskVoid OnOpenMotionClickedAsync()
+#else
         async void OnOpenMotionClicked()
+#endif
         {
 #if UNITY_STANDALONE_WIN
             var path = VRM10FileDialogForWindows.FileDialog("open Motion", "bvh", "gltf", "glb", "vrma");
@@ -429,8 +438,13 @@ namespace UniVRM10.VRM10Viewer
             Motion = instance.GetComponent<Vrm10AnimationInstance>();
             instance.GetComponent<Animation>().Play();
         }
+#if UNITASK_IMPORTED
+        void OnPastePoseClicked() => OnPastePoseClickedAsync().Forget();
 
+        async UniTaskVoid OnPastePoseClickedAsync()
+#else
         async void OnPastePoseClicked()
+#endif
         {
             var text = GUIUtility.systemCopyBuffer;
             if (string.IsNullOrEmpty(text))
@@ -476,7 +490,13 @@ namespace UniVRM10.VRM10Viewer
             }
         }
 
+#if UNITASK_IMPORTED
+        void LoadModel(string path) => LoadModelAsync(path).Forget();
+
+        async UniTaskVoid LoadModelAsync(string path)
+#else
         async void LoadModel(string path)
+#endif
         {
             // cleanup
             m_loaded?.Dispose();

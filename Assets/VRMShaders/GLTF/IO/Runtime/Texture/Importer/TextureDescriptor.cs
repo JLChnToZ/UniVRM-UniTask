@@ -1,5 +1,9 @@
 ﻿using System;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 
 namespace VRMShaders
@@ -13,7 +17,11 @@ namespace VRMShaders
     ///   File.WriteAllBytes
     /// </summary>
     /// <returns></returns>
+#if UNITASK_IMPORTED
+    public delegate UniTask<(byte[] binary, string mimeType)?> GetTextureBytesAsync();
+#else
     public delegate Task<(byte[] binary, string mimeType)?> GetTextureBytesAsync();
+#endif
 
     /// <summary>
     /// 入力 glTF ファイルを Import した結果生成される、UnityEngine.Texture のアセット 1 つを確定させる Import 情報。

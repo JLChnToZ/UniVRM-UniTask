@@ -2,7 +2,12 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine.Profiling;
 using VRMShaders;
 
@@ -75,7 +80,11 @@ namespace UniGLTF
         };
 
         #region Load. Build unity objects
+#if UNITASK_IMPORTED
+        public virtual async UniTask<RuntimeGltfInstance> LoadAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime = null)
+#else
         public virtual async Task<RuntimeGltfInstance> LoadAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime = null)
+#endif
         {
             if (awaitCaller == null)
             {
@@ -309,7 +318,11 @@ namespace UniGLTF
             return Task.FromResult<object>(null);
         }
 
+#if UNITASK_IMPORTED
+        async UniTask<MeshWithMaterials> BuildMeshAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime, MeshData meshData, int i)
+#else
         async Task<MeshWithMaterials> BuildMeshAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime, MeshData meshData, int i)
+#endif
         {
             using (MeasureTime("BuildMesh"))
             {

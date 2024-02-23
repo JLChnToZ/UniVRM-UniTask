@@ -1,6 +1,11 @@
 using System;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.Rendering;
@@ -88,10 +93,17 @@ namespace UniGLTF
             Profiler.EndSample();
         }
 
+        #if UNITASK_IMPORTED
+        public static async UniTask<MeshWithMaterials> BuildMeshAndUploadAsync(
+            IAwaitCaller awaitCaller,
+            MeshData data,
+            Func<int, Material> materialFromIndex)
+        #else
         public static async Task<MeshWithMaterials> BuildMeshAndUploadAsync(
             IAwaitCaller awaitCaller,
             MeshData data,
             Func<int, Material> materialFromIndex)
+        #endif
         {
 
             //Debug.Log(prims.ToJson());

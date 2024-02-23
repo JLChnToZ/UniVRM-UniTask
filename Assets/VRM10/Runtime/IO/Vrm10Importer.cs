@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF;
 using UniGLTF.Utils;
 using UnityEngine;
@@ -72,7 +77,11 @@ namespace UniVRM10
             }
         }
 
+#if UNITASK_IMPORTED
+        public override async UniTask<RuntimeGltfInstance> LoadAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime = null)
+#else
         public override async Task<RuntimeGltfInstance> LoadAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime = null)
+#endif
         {
             if (awaitCaller == null)
             {
@@ -155,7 +164,11 @@ namespace UniVRM10
         /// </summary>
         /// <param name="MeasureTime"></param>
         /// <returns></returns>
+#if UNITASK_IMPORTED
+        protected override async UniTask LoadGeometryAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime)
+#else
         protected override async Task LoadGeometryAsync(IAwaitCaller awaitCaller, Func<string, IDisposable> MeasureTime)
+#endif
         {
             // fill assets
             for (int i = 0; i < m_model.Materials.Count; ++i)
@@ -331,7 +344,11 @@ namespace UniVRM10
             return clip;
         }
 
+#if UNITASK_IMPORTED
+        public async UniTask<Texture2D> LoadVrmThumbnailAsync(IAwaitCaller awaitCaller = null)
+#else
         public async Task<Texture2D> LoadVrmThumbnailAsync(IAwaitCaller awaitCaller = null)
+#endif
         {
             if (awaitCaller == null)
             {
@@ -349,7 +366,11 @@ namespace UniVRM10
             }
         }
 
+#if UNITASK_IMPORTED
+        async UniTask<VRM10Object> LoadVrmAsync(IAwaitCaller awaitCaller, UniGLTF.Extensions.VRMC_vrm.VRMC_vrm vrmExtension)
+#else
         async Task<VRM10Object> LoadVrmAsync(IAwaitCaller awaitCaller, UniGLTF.Extensions.VRMC_vrm.VRMC_vrm vrmExtension)
+#endif
         {
             if (m_externalMap.TryGetValue(VRM10Object.SubAssetKey, out UnityEngine.Object obj) && obj is VRM10Object vrm)
             {

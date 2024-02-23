@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace UniGLTF.GltfViewer
 {
@@ -27,11 +30,17 @@ namespace UniGLTF.GltfViewer
                 return;
             }
             Debug.Log($"open: {path}");
-
+#if UNITASK_IMPORTED
+            _ =
+#endif
             LoadPathAsync(path);
         }
 
+#if UNITASK_IMPORTED
+        async UniTaskVoid LoadPathAsync(VRMShaders.PathObject path)
+#else
         async void LoadPathAsync(VRMShaders.PathObject path)
+#endif
         {
             if (_instance)
             {

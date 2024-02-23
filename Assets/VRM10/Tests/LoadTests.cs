@@ -21,7 +21,11 @@ namespace UniVRM10.Test
 
                 using (var loader = new Vrm10Importer(vrm1Data))
                 {
+#if UNITASK_IMPORTED
+                    loader.LoadAsync(new VRMShaders.ImmediateCaller()).GetAwaiter().GetResult();
+#else
                     loader.LoadAsync(new VRMShaders.ImmediateCaller()).Wait();
+#endif
                 }
             }
         }

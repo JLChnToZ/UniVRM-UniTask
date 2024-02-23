@@ -3,7 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using UniGLTF;
 using UnityEngine;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF.Utils;
 using VRMShaders;
 using Object = UnityEngine.Object;
@@ -139,7 +144,11 @@ namespace VRM
             proxy.BlendShapeAvatar = BlendShapeAvatar;
         }
 
+        #if UNITASK_IMPORTED
+        async UniTask<BlendShapeClip> LoadBlendShapeBind(glTF_VRM_BlendShapeGroup group, Dictionary<Mesh, Transform> transformMeshTable, IAwaitCaller awaitCaller)
+        #else
         async Task<BlendShapeClip> LoadBlendShapeBind(glTF_VRM_BlendShapeGroup group, Dictionary<Mesh, Transform> transformMeshTable, IAwaitCaller awaitCaller)
+        #endif
         {
             var asset = ScriptableObject.CreateInstance<BlendShapeClip>();
             var groupName = group.name;
@@ -291,7 +300,11 @@ namespace VRM
         public BlendShapeAvatar BlendShapeAvatar;
         public VRMMetaObject Meta;
 
+#if UNITASK_IMPORTED
+        public async UniTask<VRMMetaObject> ReadMetaAsync(IAwaitCaller awaitCaller, bool createThumbnail = false)
+#else
         public async Task<VRMMetaObject> ReadMetaAsync(IAwaitCaller awaitCaller, bool createThumbnail = false)
+#endif
         {
             if (awaitCaller == null)
             {

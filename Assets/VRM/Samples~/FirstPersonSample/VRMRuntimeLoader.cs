@@ -2,6 +2,9 @@
 using System.IO;
 using UniGLTF;
 using UnityEngine;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif
 
 
 namespace VRM.FirstPersonSample
@@ -69,7 +72,13 @@ namespace VRM.FirstPersonSample
             m_canvas.LoadBVHButton.onClick.AddListener(LoadBVHClicked);
         }
 
+#if UNITASK_IMPORTED
+        void LoadVRMClicked() => LoadVRMClickedAsync().Forget();
+
+        async UniTaskVoid LoadVRMClickedAsync()
+#else
         async void LoadVRMClicked()
+#endif
         {
 #if UNITY_STANDALONE_WIN
             var path = FileDialogForWindows.FileDialog("open VRM", ".vrm");
@@ -92,7 +101,14 @@ namespace VRM.FirstPersonSample
         /// <summary>
         /// メタが不要な場合のローダー
         /// </summary>
+
+#if UNITASK_IMPORTED
+        void LoadVRMClicked_without_meta() => LoadVRMClickedAsync_without_meta().Forget();
+
+        async UniTaskVoid LoadVRMClickedAsync_without_meta()
+#else
         async void LoadVRMClicked_without_meta()
+#endif
         {
 #if UNITY_STANDALONE_WIN
             var path = FileDialogForWindows.FileDialog("open VRM", ".vrm");

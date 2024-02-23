@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UniGLTF;
 using UnityEngine;
 using VRMShaders;
@@ -36,6 +40,18 @@ namespace UniVRM10
         /// <param name="vrmMetaInformationCallback">return callback that notify meta information before loading.</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>vrm-1.0 instance. Maybe return null if unexpected error was raised.</returns>
+#if UNITASK_IMPORTED
+        public static async UniTask<Vrm10Instance> LoadPathAsync(
+            string path,
+            bool canLoadVrm0X = true,
+            ControlRigGenerationOption controlRigGenerationOption = ControlRigGenerationOption.Generate,
+            bool showMeshes = true,
+            IAwaitCaller awaitCaller = null,
+            ITextureDeserializer textureDeserializer = null,
+            IMaterialDescriptorGenerator materialGenerator = null,
+            VrmMetaInformationCallback vrmMetaInformationCallback = null,
+            CancellationToken ct = default)
+#else
         public static async Task<Vrm10Instance> LoadPathAsync(
             string path,
             bool canLoadVrm0X = true,
@@ -46,6 +62,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator = null,
             VrmMetaInformationCallback vrmMetaInformationCallback = null,
             CancellationToken ct = default)
+#endif
         {
             if (awaitCaller == null)
             {
@@ -83,6 +100,18 @@ namespace UniVRM10
         /// <param name="vrmMetaInformationCallback">return callback that notify meta information before loading.</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>vrm-1.0 instance. Maybe return null if unexpected error was raised.</returns>
+#if UNITASK_IMPORTED  
+        public static async UniTask<Vrm10Instance> LoadBytesAsync(
+            byte[] bytes,
+            bool canLoadVrm0X = true,
+            ControlRigGenerationOption controlRigGenerationOption = ControlRigGenerationOption.Generate,
+            bool showMeshes = true,
+            IAwaitCaller awaitCaller = null,
+            ITextureDeserializer textureDeserializer = null,
+            IMaterialDescriptorGenerator materialGenerator = null,
+            VrmMetaInformationCallback vrmMetaInformationCallback = null,
+            CancellationToken ct = default)
+#else
         public static async Task<Vrm10Instance> LoadBytesAsync(
             byte[] bytes,
             bool canLoadVrm0X = true,
@@ -93,6 +122,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator = null,
             VrmMetaInformationCallback vrmMetaInformationCallback = null,
             CancellationToken ct = default)
+#endif
         {
             if (awaitCaller == null)
             {
@@ -114,6 +144,19 @@ namespace UniVRM10
                 ct);
         }
 
+#if UNITASK_IMPORTED
+        private static async UniTask<Vrm10Instance> LoadAsync(
+            string name,
+            byte[] bytes,
+            bool canLoadVrm0X,
+            ControlRigGenerationOption controlRigGenerationOption,
+            bool showMeshes,
+            IAwaitCaller awaitCaller,
+            ITextureDeserializer textureDeserializer,
+            IMaterialDescriptorGenerator materialGenerator,
+            VrmMetaInformationCallback vrmMetaInformationCallback,
+            CancellationToken ct)
+#else
         private static async Task<Vrm10Instance> LoadAsync(
             string name,
             byte[] bytes,
@@ -125,6 +168,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator,
             VrmMetaInformationCallback vrmMetaInformationCallback,
             CancellationToken ct)
+#endif
         {
             ct.ThrowIfCancellationRequested();
             if (awaitCaller == null)
@@ -185,6 +229,17 @@ namespace UniVRM10
             }
         }
 
+#if UNITASK_IMPORTED
+        private static async UniTask<Vrm10Instance> TryLoadingAsVrm10Async(
+            GltfData gltfData,
+            ControlRigGenerationOption controlRigGenerationOption,
+            bool showMeshes,
+            IAwaitCaller awaitCaller,
+            ITextureDeserializer textureDeserializer,
+            IMaterialDescriptorGenerator materialGenerator,
+            VrmMetaInformationCallback vrmMetaInformationCallback,
+            CancellationToken ct)
+#else
         private static async Task<Vrm10Instance> TryLoadingAsVrm10Async(
             GltfData gltfData,
             ControlRigGenerationOption controlRigGenerationOption,
@@ -194,6 +249,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator,
             VrmMetaInformationCallback vrmMetaInformationCallback,
             CancellationToken ct)
+#endif
         {
             ct.ThrowIfCancellationRequested();
             if (awaitCaller == null)
@@ -222,6 +278,17 @@ namespace UniVRM10
                 ct);
         }
 
+#if UNITASK_IMPORTED
+        private static async UniTask<Vrm10Instance> TryMigratingFromVrm0XAsync(
+            GltfData gltfData,
+            ControlRigGenerationOption controlRigGenerationOption,
+            bool showMeshes,
+            IAwaitCaller awaitCaller,
+            ITextureDeserializer textureDeserializer,
+            IMaterialDescriptorGenerator materialGenerator,
+            VrmMetaInformationCallback vrmMetaInformationCallback,
+            CancellationToken ct)
+#else
         private static async Task<Vrm10Instance> TryMigratingFromVrm0XAsync(
             GltfData gltfData,
             ControlRigGenerationOption controlRigGenerationOption,
@@ -231,6 +298,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator,
             VrmMetaInformationCallback vrmMetaInformationCallback,
             CancellationToken ct)
+#endif
         {
             ct.ThrowIfCancellationRequested();
             if (awaitCaller == null)
@@ -267,6 +335,18 @@ namespace UniVRM10
             }
         }
 
+#if UNITASK_IMPORTED
+        private static async UniTask<Vrm10Instance> LoadVrm10DataAsync(
+            Vrm10Data vrm10Data,
+            MigrationData migrationData,
+            ControlRigGenerationOption controlRigGenerationOption,
+            bool showMeshes,
+            IAwaitCaller awaitCaller,
+            ITextureDeserializer textureDeserializer,
+            IMaterialDescriptorGenerator materialGenerator,
+            VrmMetaInformationCallback vrmMetaInformationCallback,
+            CancellationToken ct)
+#else
         private static async Task<Vrm10Instance> LoadVrm10DataAsync(
             Vrm10Data vrm10Data,
             MigrationData migrationData,
@@ -277,6 +357,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator,
             VrmMetaInformationCallback vrmMetaInformationCallback,
             CancellationToken ct)
+#endif
         {
             ct.ThrowIfCancellationRequested();
             if (awaitCaller == null)

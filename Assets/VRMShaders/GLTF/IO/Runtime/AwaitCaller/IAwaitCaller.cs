@@ -1,5 +1,10 @@
 ﻿using System;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 
 namespace VRMShaders
 {
@@ -30,7 +35,11 @@ namespace VRMShaders
         /// <param name="action"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+#if UNITASK_IMPORTED
+        UniTask<T> Run<T>(Func<T> action);
+#else
         Task<T> Run<T>(Func<T> action);
+#endif
 
         /// <summary>
         /// 指定した時間が経過している場合のみ、NextFrame() を使って1フレーム待つ

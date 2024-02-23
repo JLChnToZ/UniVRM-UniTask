@@ -1,6 +1,9 @@
 {
     "name": "VRMShaders.GLTF.IO.Runtime",
-    "references": [],
+    "rootNamespace": "",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -8,6 +11,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "2",
+            "define": "UNITASK_IMPORTED"
+        }
+    ],
     "noEngineReferences": false
 }

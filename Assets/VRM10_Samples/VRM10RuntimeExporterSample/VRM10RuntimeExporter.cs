@@ -2,6 +2,9 @@
 using UniGLTF;
 using UnityEngine;
 using VRMShaders;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif
 
 namespace UniVRM10.RuntimeExporterSample
 {
@@ -16,6 +19,9 @@ namespace UniVRM10.RuntimeExporterSample
         {
             if (GUILayout.Button("Load"))
             {
+#if UNITASK_IMPORTED
+                _ =
+#endif
                 Load();
             }
 
@@ -32,7 +38,11 @@ namespace UniVRM10.RuntimeExporterSample
             }
         }
 
+#if UNITASK_IMPORTED
+        async UniTaskVoid Load()
+#else
         async void Load()
+#endif
         {
 #if UNITY_STANDALONE_WIN
             var path = VRM10FileDialogForWindows.FileDialog("open VRM", ".vrm");

@@ -1,5 +1,10 @@
 ﻿using System;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+using Task = Cysharp.Threading.Tasks.UniTask;
+#else
 using System.Threading.Tasks;
+#endif
 using Unity.Collections;
 using UnityEngine;
 using VRMShaders;

@@ -1,5 +1,8 @@
 ﻿using System;
 using UnityEngine;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#endif
 using Object = UnityEngine.Object;
 
 namespace VRMShaders
@@ -18,10 +21,13 @@ namespace VRMShaders
 
         public bool Enqueue(Action action)
         {
+#if UNITASK_IMPORTED
+            UniTask.Post(action);
+#else
             var currentFrame = Time.frameCount;
 
             UnityLoopTaskScheduler.Instance.Scheduler.Enqueue(action, () => Time.frameCount != currentFrame);
-
+#endif
             return true;
         }
 

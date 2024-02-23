@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using UnityEngine;
 using VRMShaders;
 
@@ -191,8 +195,14 @@ namespace UniGLTF
             return string.Join("/", path);
         }
 
+
+#if UNITASK_IMPORTED
+        public static async UniTask<AnimationClip> ConvertAnimationClipAsync(GltfData data, glTFAnimation animation,
+            IAxisInverter inverter, IAwaitCaller awaitCaller, glTFNode root = null)
+#else
         public static async Task<AnimationClip> ConvertAnimationClipAsync(GltfData data, glTFAnimation animation,
             IAxisInverter inverter, IAwaitCaller awaitCaller, glTFNode root = null)
+#endif
         {
             var clip = new AnimationClip();
             clip.ClearCurves();
