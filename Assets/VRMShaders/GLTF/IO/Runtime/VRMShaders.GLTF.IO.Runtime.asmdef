@@ -2,7 +2,8 @@
     "name": "VRMShaders.GLTF.IO.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:3d354272d3f2f4c3387dbccbaebd0f60"
+        "GUID:3d354272d3f2f4c3387dbccbaebd0f60",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
