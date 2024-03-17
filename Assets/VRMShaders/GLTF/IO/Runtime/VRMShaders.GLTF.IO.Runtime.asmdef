@@ -2,7 +2,7 @@
     "name": "VRMShaders.GLTF.IO.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "GUID:3d354272d3f2f4c3387dbccbaebd0f60"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -16,6 +16,11 @@
             "name": "com.cysharp.unitask",
             "expression": "2",
             "define": "UNITASK_IMPORTED"
+        },
+        {
+            "name": "com.unity.cloud.ktx",
+            "expression": "3.0.0",
+            "define": "USE_COM_UNITY_CLOUD_KTX"
         }
     ],
     "noEngineReferences": false
