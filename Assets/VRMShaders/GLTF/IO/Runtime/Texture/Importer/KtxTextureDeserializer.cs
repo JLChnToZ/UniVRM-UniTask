@@ -1,5 +1,9 @@
 ﻿using System;
+#if UNITASK_IMPORTED
+using Cysharp.Threading.Tasks;
+#else
 using System.Threading.Tasks;
+#endif
 using Unity.Collections;
 using UnityEngine;
 #if USE_COM_UNITY_CLOUD_KTX
@@ -10,7 +14,11 @@ namespace VRMShaders
 {
     public sealed class KtxTextureDeserializer : ITextureDeserializer
     {
+        #if UNITASK_IMPORTED
+        public async UniTask<Texture2D> LoadTextureAsync(DeserializingTextureInfo textureInfo, IAwaitCaller awaitCaller)
+        #else
         public async Task<Texture2D> LoadTextureAsync(DeserializingTextureInfo textureInfo, IAwaitCaller awaitCaller)
+        #endif
         {
 #if USE_COM_UNITY_CLOUD_KTX
             if (textureInfo.ImageData == null) return null;
