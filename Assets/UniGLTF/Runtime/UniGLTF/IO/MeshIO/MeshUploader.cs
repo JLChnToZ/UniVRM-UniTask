@@ -97,12 +97,12 @@ namespace UniGLTF
         public static async UniTask<MeshWithMaterials> BuildMeshAndUploadAsync(
             IAwaitCaller awaitCaller,
             MeshData data,
-            Func<int, Material> materialFromIndex)
+            Func<int?, Material> materialFromIndex)
         #else
         public static async Task<MeshWithMaterials> BuildMeshAndUploadAsync(
             IAwaitCaller awaitCaller,
             MeshData data,
-            Func<int, Material> materialFromIndex)
+            Func<int?, Material> materialFromIndex)
         #endif
         {
 
