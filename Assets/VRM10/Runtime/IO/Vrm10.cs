@@ -160,6 +160,18 @@ namespace UniVRM10
         /// <param name="vrmMetaInformationCallback">return callback that notify meta information before loading.</param>
         /// <param name="ct">CancellationToken</param>
         /// <returns>vrm-1.0 instance. Maybe return null if unexpected error was raised.</returns>
+#if UNITASK_IMPORTED
+        public static async UniTask<Vrm10Instance> LoadGltfDataAsync(
+            GltfData gltfData,
+            bool canLoadVrm0X = true,
+            ControlRigGenerationOption controlRigGenerationOption = ControlRigGenerationOption.Generate,
+            bool showMeshes = true,
+            IAwaitCaller awaitCaller = null,
+            ITextureDeserializer textureDeserializer = null,
+            IMaterialDescriptorGenerator materialGenerator = null,
+            VrmMetaInformationCallback vrmMetaInformationCallback = null,
+            CancellationToken ct = default)
+#else
         public static async Task<Vrm10Instance> LoadGltfDataAsync(
             GltfData gltfData,
             bool canLoadVrm0X = true,
@@ -170,6 +182,7 @@ namespace UniVRM10
             IMaterialDescriptorGenerator materialGenerator = null,
             VrmMetaInformationCallback vrmMetaInformationCallback = null,
             CancellationToken ct = default)
+#endif
         {
             awaitCaller ??= Application.isPlaying
                 ? new RuntimeOnlyAwaitCaller()
@@ -189,8 +202,7 @@ namespace UniVRM10
 
 #if UNITASK_IMPORTED
         private static async UniTask<Vrm10Instance> LoadAsync(
-            string name,
-            byte[] bytes,
+            GltfData gltfData,
             bool canLoadVrm0X,
             ControlRigGenerationOption controlRigGenerationOption,
             bool showMeshes,

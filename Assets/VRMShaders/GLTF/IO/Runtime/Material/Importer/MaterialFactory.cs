@@ -37,8 +37,12 @@ namespace VRMShaders
                 {
                     // default material にバリエーションがある？
                     var task = LoadAsync(m_defaultMaterialParams, (_x, _y) => Task.FromResult<Texture>(null), new ImmediateCaller());
+#if UNITASK_IMPORTED
+                    m_defaultMaterial = task.GetAwaiter().GetResult();
+#else
                     task.Wait();
                     m_defaultMaterial = task.Result;
+#endif
                 }
                 return m_defaultMaterial;
             }

@@ -14,7 +14,11 @@ namespace UniVRM10.Test
                 awaitCaller: new ImmediateCaller()
             );
 
+#if UNITASK_IMPORTED
+            Assert.AreEqual(Cysharp.Threading.Tasks.UniTaskStatus.Succeeded, loadTask.Status);
+#else
             Assert.AreEqual(true, loadTask.IsCompleted);
+#endif
         }
     }
 }
